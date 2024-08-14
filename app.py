@@ -34,6 +34,7 @@ def preprocess_input_data(input_df):
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    message = None  # Initialize the message variable
     prediction = None
     if request.method == 'POST':
         # Récupérer les données du formulaire
@@ -44,7 +45,7 @@ def home():
         new_data = pd.DataFrame(data)
         
         # Assigner 'tailnum' comme index
-        new_data.set_index('tailnum', inplace=True)
+        #new_data.set_index('tailnum', inplace=True)
         
         # Prétraiter les nouvelles données
         new_data = preprocess_input_data(new_data)
