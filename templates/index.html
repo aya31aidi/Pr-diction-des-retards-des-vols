@@ -16,6 +16,10 @@
             <div class="card-body">
                 <form action="/" method="post">
                     <div class="form-group">
+                        <label for="year">Year:</label>
+                        <input type="text" id="year" name="year" class="form-control" required>
+                    </div>
+                    <div class="form-group">
                         <label for="month">Month:</label>
                         <input type="text" id="month" name="month" class="form-control" required>
                     </div>
@@ -32,28 +36,56 @@
                         <input type="text" id="sched_dep_time" name="sched_dep_time" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="dep_delay">Departure Delay:</label>
+                        <label for="dep_delay">Departure Delay (in minutes):</label>
                         <input type="text" id="dep_delay" name="dep_delay" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="arr_time">Arrival Time (HHMM format):</label>
+                        <input type="text" id="arr_time" name="arr_time" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sched_arr_time">Scheduled Arrival Time (HHMM format):</label>
+                        <input type="text" id="sched_arr_time" name="sched_arr_time" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="carrier">Carrier:</label>
                         <input type="text" id="carrier" name="carrier" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="origin">Origin:</label>
+                        <label for="flight">Flight Number:</label>
+                        <input type="text" id="flight" name="flight" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tailnum">Tail Number:</label>
+                        <input type="text" id="tailnum" name="tailnum" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="origin">Origin Airport:</label>
                         <input type="text" id="origin" name="origin" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="dest">Destination:</label>
+                        <label for="dest">Destination Airport:</label>
                         <input type="text" id="dest" name="dest" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="air_time">Air Time (Flight time in minutes):</label>
+                        <label for="air_time">Air Time (in minutes):</label>
                         <input type="text" id="air_time" name="air_time" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="distance">Distance:</label>
+                        <label for="distance">Distance (in miles):</label>
                         <input type="text" id="distance" name="distance" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hour">Scheduled Departure Hour:</label>
+                        <input type="text" id="hour" name="hour" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="minute">Scheduled Departure Minute:</label>
+                        <input type="text" id="minute" name="minute" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time_hour">Scheduled Departure Date:</label>
+                        <input type="text" id="time_hour" name="time_hour" class="form-control" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Predict</button>
                 </form>
@@ -61,9 +93,9 @@
                 {% if prediction is not none %}
                 <div class="result mt-3">
                     {% if prediction == 1 %}
-                    The flight will be delayed.
+                    The flight will be delayed !
                     {% else %}
-                    The flight will not be delayed.
+                    The flight will not be delayed !
                     {% endif %}
                 </div>
                 {% endif %}

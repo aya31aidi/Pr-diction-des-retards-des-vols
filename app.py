@@ -17,19 +17,6 @@ def preprocess_input_data(input_df):
     bool_columns = input_df.select_dtypes(include=['bool']).columns
     input_df[bool_columns] = input_df[bool_columns].astype(int)
     
-    # Identification des colonnes de type date/heure
-    datetime_columns = input_df.select_dtypes(include=['object']).apply(pd.to_datetime, errors='coerce').notna().any()
-    
-    # Conversion des colonnes date/heure en composantes numériques
-    for col in datetime_columns[datetime_columns].index:
-        input_df[col] = pd.to_datetime(input_df[col], errors='coerce')
-        input_df[col + '_year'] = input_df[col].dt.year
-        input_df[col + '_month'] = input_df[col].dt.month
-        input_df[col + '_day'] = input_df[col].dt.day
-        input_df[col + '_hour'] = input_df[col].dt.hour
-        input_df[col + '_minute'] = input_df[col].dt.minute
-        input_df = input_df.drop(columns=[col])  # Supprimer la colonne originale
-
     return input_df
 
 @app.route('/', methods=['GET', 'POST'])
@@ -41,11 +28,16 @@ def home():
         data = request.form.to_dict()
         data = {key: [float(value)] if key not in ['carrier', 'origin', 'dest', 'tailnum', 'time_hour'] else [value] for key, value in data.items()}
         
+        # Reconstituer les champs dep_time et sched_dep_time à partir des heures et minutes
+        data['dep_time'] = [int(data['dep_time'][0])]
+        data['sched_dep_time'] = [int(data['sched_dep_time'][0])]
+        
         # Convertir les données en DataFrame
         new_data = pd.DataFrame(data)
         
-        # Assigner 'tailnum' comme index
-        #new_data.set_index('tailnum', inplace=True)
+        # Supprimer les colonnes inutiles
+        columns_to_drop = ['hour', 'minute', 'time_hour']
+        new_data = new_data.drop(columns=columns_to_drop, errors='ignore')
         
         # Prétraiter les nouvelles données
         new_data = preprocess_input_data(new_data)
@@ -61,11 +53,11 @@ def home():
         # Faire des prédictions
         prediction = model.predict(new_data)[0]
 
-         # Déterminer le message basé sur la prédiction
+         
         if prediction == 1:
-            message = 'The flight will be delayed'
+            message = 1
         else:
-            message = 'The flight will not be delayed'
+            message = 0
 
     return render_template('index.html', prediction=message)
 
